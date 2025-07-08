@@ -1,0 +1,19 @@
+{
+  "eeeee": {
+    "password": "eeeeee",
+    "authenticators": []
+  },
+  "a": {
+    "password": "a",
+    "authenticators": [
+      {
+        "credentialID": "bfYdUiDBovqJGQTARP8DRCNOk1pCyc9c-E-rzFoZVSQ",
+        "credentialPublicKey": "pQECAyYgASFYIFy5HEbhjEB2rR9pwU2BYAEo+6W5m6E0cxqvx38n2hzDIlggJ+HbHWHTtmYslFre001uRj2SPE3p4QoznemG9s4TQ/M=",
+        "counter": 1,
+        "transports": [
+          "internal"
+        ]
+      }
+    ]
+  }
+}

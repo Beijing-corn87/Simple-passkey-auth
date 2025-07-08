@@ -1,0 +1,3 @@
+client.js:179  Error during passkey registration: TypeError: Cannot read properties of undefined (reading 'startRegistration')
+    at HTMLButtonElement.<anonymous> (client.js:161:65)
+(anonymous) @ client.js:179

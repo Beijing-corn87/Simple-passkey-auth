@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login or Sign Up</h2>
+
+        <div class="form-section">
+            <h3>Sign Up</h3>
+            <form id="signupForm">
+                <input type="text" id="signupUsername" placeholder="Username" required>
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p id="signupMessage" class="message"></p>
+        </div>
+
+        <div class="form-section">
+            <h3>Login</h3>
+            <form id="loginForm">
+                <input type="text" id="loginUsername" placeholder="Username" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p id="loginMessage" class="message"></p>
+        </div>
+
+        <div class="form-section">
+            <h3>Passkey Login</h3>
+            <button id="loginPasskeyButton">Sign in with Passkey</button>
+            <p id="loginPasskeyMessage" class="message"></p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
+    <script src="/client.js"></script>
+</body>
+</html>

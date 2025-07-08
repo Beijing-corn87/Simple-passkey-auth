@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome to the Homepage!</h2>
+        <p>You are logged in as <span id="loggedInUsername"></span>.</p>
+
+        <div class="form-section">
+            <h3>Passkey Management</h3>
+            <button id="addPasskeyButton">Add Passkey</button>
+            <p id="passkeyMessage" class="message"></p>
+        </div>
+
+        <button id="logoutButton">Logout</button>
+    </div>
+
+    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
+    <script src="/client.js"></script>
+</body>
+</html>
