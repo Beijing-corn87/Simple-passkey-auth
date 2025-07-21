@@ -1,2 +1,2 @@
 # simple passkey auth
-stores stuff in a json file
+stores stuff in a json file beware
