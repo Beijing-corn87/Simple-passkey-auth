@@ -5,35 +5,14 @@ const { generateRegistrationOptions, verifyRegistrationResponse, generateAuthent
 
 const app = express();
 const PORT = 8002;
-const USERS_DB_PATH = path.join(__dirname, 'users.json');
-
-// In a real application, you'd store user data in a database.
-// For this example, we'll use a JSON file.
+const users = {}; // In-memory store for temporary user data
 
 // WebAuthn RP ID and Origin
-const rpID = 'localhost'; // Your website's domain (e.g., 'example.com')
-const origin = `http://localhost:${PORT}`; // Your website's origin
+const rpID = 'simple-passkey-auth.github.io'; // Your GitHub Pages domain
+const origin = `https://simple-passkey-auth.github.io`; // Your GitHub Pages origin
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Helper functions for reading/writing users.json
-async function readUsers() {
-    try {
-        const data = await fs.readFile(USERS_DB_PATH, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            // File does not exist, return empty object
-            return {};
-        }
-        throw error;
-    }
-}
-
-async function writeUsers(users) {
-    await fs.writeFile(USERS_DB_PATH, JSON.stringify(users, null, 2), 'utf8');
-}
 
 // Routes
 app.get('/', (req, res) => {
@@ -47,7 +26,6 @@ app.get('/home', (req, res) => {
 // User registration (username/password)
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
-    const users = await readUsers();
 
     if (users[username]) {
         return res.status(400).json({ message: 'Username already exists' });
@@ -58,7 +36,6 @@ app.post('/register', async (req, res) => {
         authenticators: [], // For WebAuthn credentials
         currentChallenge: undefined, // For WebAuthn challenges
     };
-    await writeUsers(users);
 
     res.status(201).json({ message: 'User registered successfully' });
 });
@@ -66,8 +43,6 @@ app.post('/register', async (req, res) => {
 // User login (username/password)
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    const users = await readUsers();
-
     const user = users[username];
 
     if (!user || user.password !== password) {
@@ -80,7 +55,6 @@ app.post('/login', async (req, res) => {
 // WebAuthn Registration
 app.post('/register-passkey-challenge', async (req, res) => {
     const { username } = req.body;
-    const users = await readUsers();
     const user = users[username];
 
     if (!user) {
@@ -104,14 +78,12 @@ app.post('/register-passkey-challenge', async (req, res) => {
     });
 
     user.currentChallenge = options.challenge;
-    await writeUsers(users);
 
     res.json(options);
 });
 
 app.post('/register-passkey', async (req, res) => {
     const { username, attResp } = req.body;
-    const users = await readUsers();
     const user = users[username];
 
     if (!user) {
@@ -144,7 +116,6 @@ app.post('/register-passkey', async (req, res) => {
         };
         user.authenticators.push(newAuthenticator);
         user.currentChallenge = undefined;
-        await writeUsers(users);
 
         res.json({ verified });
     } else {
@@ -155,7 +126,6 @@ app.post('/register-passkey', async (req, res) => {
 // WebAuthn Authentication
 app.post('/login-passkey-challenge', async (req, res) => {
     const { username } = req.body;
-    const users = await readUsers();
     const user = users[username];
 
     if (!user) {
@@ -177,14 +147,12 @@ app.post('/login-passkey-challenge', async (req, res) => {
     });
 
     user.currentChallenge = options.challenge;
-    await writeUsers(users);
 
     res.json(options);
 });
 
 app.post('/login-passkey', async (req, res) => {
     const { username, authResp } = req.body;
-    const users = await readUsers();
     const user = users[username];
 
     if (!user) {
@@ -220,7 +188,6 @@ app.post('/login-passkey', async (req, res) => {
     if (verified) {
         authenticator.counter = authenticationInfo.newCounter;
         user.currentChallenge = undefined;
-        await writeUsers(users);
 
         res.json({ verified });
     } else {
